@@ -47,8 +47,10 @@ class PID:
         output = self.K_p*error + self.K_i*self.integral+self.K_d*derivative
 
         self.last_error = error
-
-        return output
+        if output is not None:
+            return output
+        else:
+            pass
     
     def _get_integral(self, error, dt):
         """Calculate the integral term
@@ -60,7 +62,7 @@ class PID:
         """
       
         # TODO: Calculate and return the integral term
-        integral = error*dt
+        integral = (error-self.last_error)*dt
         return integral
 
     def _get_derivative(self, error, dt):
@@ -73,5 +75,6 @@ class PID:
         """
 
         # TODO: Calculate and return the derivative term
-        derivative = (error)/dt
+        derivative = (error - self.last_error)/dt
+        
         return derivative
